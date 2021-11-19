@@ -1,0 +1,36 @@
+version: '3.5'
+
+services:
+
+  app:
+    build:
+      context: .
+    container_name: jcq-app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    ports:
+      - "7070:8080"
+
+  db:
+    image: postgres:13
+    container_name: jcq-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "543:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@user.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "4321:80"
+    volumes:
+      - ./pgadmin/:/var/lib/pgadmin/
